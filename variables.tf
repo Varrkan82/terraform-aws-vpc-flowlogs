@@ -54,6 +54,10 @@ variable "enable_default_policy" {
 
 variable "enable_versioning" {
   description = "Enable bucket versioning"
-  type        = bool
-  default     = false
+  type        = string
+  default     = "Disabled"
+  validation {
+    condition     = can(regex("^(Enabled|Disabled|Suspended)$", var.enable_versioning))
+    error_message = "Wrong state. Available only: Enabled, Disabled or Suspended"
+  }
 }
