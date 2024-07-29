@@ -61,3 +61,13 @@ variable "enable_versioning" {
     error_message = "Wrong state. Available only: Enabled, Disabled or Suspended"
   }
 }
+
+variable "sse_algorithm" {
+  description = "Server-side encryption algorythm"
+  type        = string
+  default     = "AES256"
+  validation {
+    condition     = can(regex("^(AES256|aws:kms)$", var.sse_algorithm))
+    error_message = "Wrong SSE algorythm. Available only: AES256 or aws:kms"
+  }
+}
