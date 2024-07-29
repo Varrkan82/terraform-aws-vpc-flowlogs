@@ -20,12 +20,12 @@ resource "aws_s3_bucket" "this" {
   force_destroy = var.force_destroy
 }
 
-resource "aws_s3_bucket_acl" "acl" {
+resource "aws_s3_bucket_acl" "default" {
   bucket = aws_s3_bucket.this.id
   acl    = "private"
 }
 # Versioning will not be needed for this
-resource "aws_s3_bucket_versioning" "versioning" {
+resource "aws_s3_bucket_versioning" "default" {
   bucket = aws_s3_bucket.this.id
   versioning_configuration {
     status = var.enable_versioning
@@ -33,7 +33,7 @@ resource "aws_s3_bucket_versioning" "versioning" {
 }
 
 # Enable encryption at rest
-resource "aws_s3_bucket_server_side_encryption_configuration" "encryption_config" {
+resource "aws_s3_bucket_server_side_encryption_configuration" "default" {
   bucket = aws_s3_bucket.this.id
   rule {
     apply_server_side_encryption_by_default {
@@ -45,7 +45,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encryption_config
 # Enable lifecycle:
 #   - After 30 days, data is moved to Standard Infrequent Access
 #   - After 60 days, data is expired
-resource "aws_s3_bucket_lifecycle_configuration" "lifecycle_config" {
+resource "aws_s3_bucket_lifecycle_configuration" "default" {
   bucket = aws_s3_bucket.this.id
   rule {
     id     = "vpc-flow-log-rule-1"
